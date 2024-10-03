@@ -19,7 +19,7 @@ public class MovieRestController {
         return movieService.get(movieDTO);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     public MovieDTO create(@RequestBody MovieDTO movieDTO) {
         return movieService.create(movieDTO);
     }

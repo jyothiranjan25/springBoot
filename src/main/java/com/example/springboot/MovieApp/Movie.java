@@ -1,10 +1,9 @@
 package com.example.springboot.MovieApp;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,7 +21,8 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @NotBlank(message = "Title is required")
     private String title;
 
     private String description;
@@ -30,6 +30,7 @@ public class Movie {
     @Column(name = "release_date")
     private LocalDateTime releaseDate;
 
+    @NotBlank(message = "Genre is required")
     private String genre;
 
     @Column(name = "image_poster_path")
