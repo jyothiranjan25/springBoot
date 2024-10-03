@@ -9,7 +9,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name = "app_user")
+@Table(name = "app_user",indexes = {
+        @Index(name = "idx_username", columnList = "username"),
+        @Index(name = "idx_email", columnList = "email")
+}, uniqueConstraints = {
+        @UniqueConstraint(name = "uk_username", columnNames = "username"),
+        @UniqueConstraint(name = "uk_email", columnNames = "email")
+})
 @EntityListeners(AppUserListener.class)
 public class AppUser {
 
