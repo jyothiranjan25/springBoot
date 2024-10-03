@@ -36,6 +36,9 @@ public class Movie {
     @Column(name = "image_poster_path")
     private String imagePosterPath;
 
+    @Column(name = "rating")
+    private Double rating;
+
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 }

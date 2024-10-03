@@ -17,4 +17,7 @@ public class MovieDTO {
     private String genre;
     private String imagePosterPath;
     private LocalDateTime createdAt;
+    private Double rating;
+    private Integer pageOffset;
+    private Integer pageSize;
 }

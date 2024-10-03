@@ -1,6 +1,10 @@
 package com.example.springboot.MovieApp;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +26,23 @@ public class MovieService {
 
     @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public List<MovieDTO> get(MovieDTO movieDTO) {
-       List<Movie> movies = movieRepository.findAll();
+        List<Movie> movies;
+        if (movieDTO.getTitle() != null) {
+            int pageOffset = movieDTO.getPageOffset() != null ? movieDTO.getPageOffset() : 0;
+            int pageSize = movieDTO.getPageSize() != null ? movieDTO.getPageSize() : 10;
+            Pageable pageable = PageRequest.of(pageOffset / pageSize, pageSize,
+                    Sort.by("title").ascending() // Sort by title ascending
+            );
+            movies = movieRepository.findAll(pageable).getContent();
+        } else if(movieDTO.getPageOffset() != null && movieDTO.getPageSize() != null){
+            Pageable pageable = PageRequest.of(
+                    movieDTO.getPageOffset() / movieDTO.getPageSize(),
+                    movieDTO.getPageSize()
+            );
+            movies = movieRepository.findAll(pageable).getContent();
+        }else{
+            movies = movieRepository.findAll();
+        }
        return mapper.map(movies);
     }
 
