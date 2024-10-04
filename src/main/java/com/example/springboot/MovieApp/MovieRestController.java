@@ -13,10 +13,16 @@ import java.util.List;
 public class MovieRestController {
 
     private final MovieService movieService;
+    private final MovieMapper movieMapper;
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
     public List<MovieDTO> get(MovieDTO movieDTO) {
         return movieService.get(movieDTO);
+    }
+
+    @RequestMapping(value = "/getById", method = RequestMethod.GET)
+    public MovieDTO getById(@RequestParam Long id) {
+        return movieMapper.map(movieService.getById(id));
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
