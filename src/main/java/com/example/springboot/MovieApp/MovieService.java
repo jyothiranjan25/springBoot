@@ -1,6 +1,10 @@
 package com.example.springboot.MovieApp;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -46,19 +50,20 @@ public class MovieService {
        return mapper.map(movies);
     }
 
+    @CachePut(cacheNames="moviesCache", key="#result.id")
     @Transactional
-    public MovieDTO create(MovieDTO movieDTO) {
+    public Movie create(MovieDTO movieDTO) {
         try {
             Movie movie = mapper.map(movieDTO);
             movie = movieRepository.save(movie);
-            return mapper.map(movie);
+            return movie;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
+    @CachePut(cacheNames="moviesCache", key="#result.id")
     @Transactional
-    public MovieDTO uploadDataWithImage(MovieDTO movieDTO, MultipartFile image) {
+    public Movie uploadDataWithImage(MovieDTO movieDTO, MultipartFile image) {
         String oldImagePath = null;
         try {
             Movie movie = mapper.map(movieDTO);
@@ -77,14 +82,15 @@ public class MovieService {
                 removeImage(oldImagePath);
             }
 
-            return mapper.map(movie);
+            return movie;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    @CachePut(cacheNames="moviesCache", key="#result.id")
     @Transactional
-    public MovieDTO update(MovieDTO movieDTO) {
+    public Movie update(MovieDTO movieDTO) {
         try {
             Movie movie = getById(movieDTO.getId());
             if(movieDTO.getTitle() != null){
@@ -97,12 +103,13 @@ public class MovieService {
                 movie.setDescription(movieDTO.getDescription());
             }
             movie = movieRepository.save(movie);
-            return mapper.map(movie);
+            return movie;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    @CacheEvict(cacheNames="moviesCache", key="#movieDTO.id")
     @Transactional
     public String delete(MovieDTO movieDTO) {
         try{
@@ -117,6 +124,7 @@ public class MovieService {
         }
     }
 
+    @Cacheable(cacheNames="moviesCache", key="#id")
     @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
     public Movie getById(Long id){
         return movieRepository.findById(id).orElseThrow(()-> new RuntimeException("Movie not found"));

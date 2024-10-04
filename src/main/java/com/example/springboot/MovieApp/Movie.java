@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,7 +18,10 @@ import java.time.LocalDateTime;
         @UniqueConstraint(name = "uk_title", columnNames = "title")
 })
 @EntityListeners(MovieListener.class)
-public class Movie {
+public class Movie implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

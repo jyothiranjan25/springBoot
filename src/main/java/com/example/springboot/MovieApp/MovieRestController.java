@@ -22,17 +22,20 @@ public class MovieRestController {
 
     @RequestMapping(value = "/getById", method = RequestMethod.GET)
     public MovieDTO getById(@RequestParam Long id) {
-        return movieMapper.map(movieService.getById(id));
+        Movie movies = movieService.getById(id);
+        return movieMapper.map(movies);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public MovieDTO create(@RequestBody MovieDTO movieDTO) {
-        return movieService.create(movieDTO);
+        Movie movie = movieService.create(movieDTO);
+        return  movieMapper.map(movie);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.PATCH)
     public MovieDTO update(@RequestBody MovieDTO movieDTO) {
-        return movieService.update(movieDTO);
+        Movie movie = movieService.update(movieDTO);
+        return movieMapper.map(movie);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
@@ -42,6 +45,7 @@ public class MovieRestController {
 
     @RequestMapping(value = "/saveImage", method = RequestMethod.PUT)
     public MovieDTO uploadDataWithImage(@ModelAttribute MovieDTO movieDTO, @RequestParam("image") MultipartFile image) {
-        return movieService.uploadDataWithImage(movieDTO, image);
+        Movie movie = movieService.uploadDataWithImage(movieDTO, image);
+        return  movieMapper.map(movie);
     }
 }
