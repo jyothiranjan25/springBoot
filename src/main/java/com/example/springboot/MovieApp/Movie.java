@@ -3,6 +3,8 @@ package com.example.springboot.MovieApp;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cache;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 },uniqueConstraints = {
         @UniqueConstraint(name = "uk_title", columnNames = "title")
 })
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @EntityListeners(MovieListener.class)
 public class Movie implements Serializable {
 
