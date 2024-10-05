@@ -19,8 +19,6 @@ import java.time.LocalDateTime;
 },uniqueConstraints = {
         @UniqueConstraint(name = "uk_title", columnNames = "title")
 })
-@Cacheable
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @EntityListeners(MovieListener.class)
 public class Movie implements Serializable {
 
