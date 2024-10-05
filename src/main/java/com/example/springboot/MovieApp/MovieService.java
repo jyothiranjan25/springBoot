@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -24,8 +25,8 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieMapper mapper;
-    final static String BASE_PATH = System.getProperty("user.dir") + "/src/main/resources/static";
-    final static String IMAGE_URL = "/images/";
+    final static String BASE_PATH = System.getProperty("user.dir") + "/src/main/resources";
+    final static String IMAGE_URL = "/static/images/";
 
 
     @Transactional(readOnly = true,propagation = Propagation.REQUIRES_NEW)
@@ -132,7 +133,7 @@ public class MovieService {
 
     private String saveImage(MultipartFile image) {
         try {
-            String imageName = IMAGE_URL + UUID.randomUUID() + image.getContentType().replace("image/",".");
+            String imageName = IMAGE_URL + UUID.randomUUID() + Objects.requireNonNull(image.getContentType()).replace("image/",".");
             String imagePath = BASE_PATH + imageName;
             image.transferTo(new File(imagePath));
             return imageName;
