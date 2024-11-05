@@ -39,6 +39,6 @@ public class AppUser {
     @Column(name = "is_active", columnDefinition = "boolean default true")
     private Boolean isActive;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime createdAt;
 }
